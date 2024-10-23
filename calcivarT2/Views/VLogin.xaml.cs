@@ -2,22 +2,37 @@ namespace calcivarT2.Views;
 
 public partial class VLogin : ContentPage
 {
-	public VLogin()
+    private Dictionary<string, string> usuarios = new Dictionary<string, string>()
+    {
+        { "Carlos", "carlos123" },
+        { "Ana", "ana123" },
+        { "Jose", "jose123" }
+    };
+    public VLogin()
 	{
 		InitializeComponent();
 	}
     private async void OnLoginClicked(object sender, EventArgs e)
     {
-        string usuario = txtUsuario.Text;
-        string contraseña = txtContraseña.Text;
+        string inputUsuario = txtUsuario.Text;
+        string inputContrasena = txtContraseña.Text;
 
-        if (usuario == "admin" && contraseña == "1234")
+        if (usuarios.ContainsKey(inputUsuario))
         {
-            await Navigation.PushAsync(new VHome());
+            string storedPassword = usuarios[inputUsuario];
+
+            if (storedPassword == inputContrasena)
+            {
+                Navigation.PushAsync(new VHome());
+            }
+            else
+            {
+                DisplayAlert("Error", "Usuario o contraseña incorrecto", "OK");
+            }
         }
         else
         {
-            await DisplayAlert("Error", "Usuario o contraseña incorrectos", "OK");
+            DisplayAlert("Error", "Usuario no registrado", "OK");
         }
     }
 }
